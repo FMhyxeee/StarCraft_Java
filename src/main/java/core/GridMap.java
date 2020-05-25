@@ -1,7 +1,9 @@
 package core;
 
 import icon.BaseIcon;
+import tile.Sprite;
 import tile.Tile;
+import util.path.AStarSearch;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -50,7 +52,9 @@ public class GridMap {
 
     //删除tile,拿到一个，删除一片
     public void remove(Tile tile){
-        if (tile == null) return;
+        if (tile == null) {
+            return;
+        }
 
         tiles.remove(tile);
         Point local = new Point(tile.getTileX(), tile.getTileY());
@@ -107,7 +111,37 @@ public class GridMap {
         return false;
     }
 
+    public GridMapRender getTileMapRender(){
+        return tileMapRender;
+    }
 
+    public void setTileMapRender(GridMapRender tileMapRender){
+        this.tileMapRender = tileMapRender;
+    }
+
+    public String getIconKey(BaseIcon icon){
+        for (Map.Entry<String,BaseIcon> iconEntry : iconMap.entrySet()){
+            if (iconEntry.getValue().equals(icon)){
+                return iconEntry.getKey();
+            }
+        }
+        return null;
+    }
+
+    public BaseIcon getIconValue(String key){
+        return iconMap.get(key);
+    }
+
+    public void setIconMap(Map<String,BaseIcon> iconMap){
+        this.iconMap = iconMap;
+    }
+
+    public void buildSprite(Tile house, BaseIcon icon, String newTileUUId){
+        System.out.println("GridMap.buildSprite()" + newTileUUId + "," + house);
+        Tile tile = icon.getTile(house.getType());
+        GridMapRender gm = getTileMapRender();
+        Point location = AStarSearch.findNeighborNode(this,GridMapRender.tileXToPx(house.getTileX()),GridMapRender.tileYToPx(house.getTileY()));
+    }
 
 
 }

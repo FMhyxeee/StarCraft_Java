@@ -5,7 +5,6 @@ import core.GridMap;
 import core.GridMapRender;
 import core.ResourceManager;
 import icon.BaseIcon;
-import sun.applet.AppletAudioClip;
 import util.Resource;
 import util.path.AStarNode;
 import util.path.AStarSearch;
@@ -119,7 +118,7 @@ public abstract class Sprite extends AbstractTile {
         }else{
 
             if(tileX<targetX){
-                currentAnim = tileY<targetY?animations[ainmStatus][SOUTH_EAST]:animations[ainmStatus][NOTH_EAST];
+                currentAnim = tileY<targetY?animations[ainmStatus][SOUTH_EAST]:animations[ainmStatus][NORTH_EAST];
             }else{
                 currentAnim = tileY<targetY?animations[ainmStatus][SOUTH_WEST]:animations[ainmStatus][NOTH_WEST];
             }
@@ -138,10 +137,14 @@ public abstract class Sprite extends AbstractTile {
 
         }else if(isFighting()){
 
-            if(AStarSearch.isNeighbors(tileX,tileY, target))
+            if(AStarSearch.isNeighbors(tileX,tileY, target)){
                 adjustFight();
-            else
+            }
+
+            else {
                 status=5;
+            }
+
 
         }
 
@@ -188,6 +191,7 @@ public abstract class Sprite extends AbstractTile {
         }
     }
 
+    @Override
     public synchronized void update(long elapsedTime){
         speed = getSpeed();
         x += velocityX * elapsedTime;
@@ -273,14 +277,14 @@ public abstract class Sprite extends AbstractTile {
         // 判断上下
         else if (velocityY != 0 && velocityX == 0) {
 
-            newAnim = velocityY > 0 ? animations[ainmStatus][SOUTH]: animations[ainmStatus][NOTH];
+            newAnim = velocityY > 0 ? animations[ainmStatus][SOUTH]: animations[ainmStatus][NORTH];
         }
         // 判断四个斜角
         else if (velocityX != 0 && velocityY != 0) {
 
             if (velocityX > 0) {
 
-                newAnim = velocityY > 0 ? animations[ainmStatus][SOUTH_EAST]: animations[ainmStatus][NOTH_EAST];
+                newAnim = velocityY > 0 ? animations[ainmStatus][SOUTH_EAST]: animations[ainmStatus][NORTH_EAST];
 
             } else {
 
@@ -303,7 +307,8 @@ public abstract class Sprite extends AbstractTile {
         return currentAnim.getImage().getWidth(null);
     }
 
-    public void draw(Graphics2D g,int offsetX,int offsetY) {
+    @Override
+    public void draw(Graphics2D g, int offsetX, int offsetY) {
 
         int x = Math.round(this.x-offsetX);
         int y = Math.round(this.y-offsetY);
@@ -327,7 +332,8 @@ public abstract class Sprite extends AbstractTile {
         g.drawImage(currentAnim.getImage(), x, y, null);
     }
 
-    public Tile clone(int x,int y,GridMap map) {
+    @Override
+    public Tile clone(int x, int y, GridMap map) {
 
         Constructor constructor = getClass().getConstructors()[0];
         Animation[][] ans = new Animation[this.animations.length][this.animations[0].length];
@@ -413,6 +419,7 @@ public abstract class Sprite extends AbstractTile {
             }
         }
 
+        @Override
         public Object clone(){
             return new Animation(frames,totalDuration);
         }
@@ -426,6 +433,7 @@ public abstract class Sprite extends AbstractTile {
         this.gridMap = tileMap;
     }
 
+    @Override
     public int getId(){return id; }
 
     public float getVelocityX(){return velocityX;}
@@ -458,6 +466,7 @@ public abstract class Sprite extends AbstractTile {
 
     private final static Point SIZE = new Point(1,1);
 
+    @Override
     public Point getSize(){
         return SIZE;
     }
@@ -491,12 +500,24 @@ public abstract class Sprite extends AbstractTile {
         return status == 5;
     }
 
+    public double getDistance(Point target){
+        float tx = target.x - x;
+        float ty = target.y - y;
+        return Math.sqrt(tx * tx + ty * ty);
+    }
+
+    public void stop(){
+        this.status = 0;
+    }
+
+    @Override
     public String toString(){
         return "[" + x + "," + y + "]";
     }
 
     public abstract Resource getResource();
 
+    @Override
     public float getDefence(){
         return 0.00005f;
     }

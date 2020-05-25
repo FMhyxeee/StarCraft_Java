@@ -26,7 +26,41 @@ public class Particle {
     }
 
     public void update(long elapsedTime){
+        velocity = velocity.add(velocity.multiply(0.2f));
+        position = position.add(velocity);
+        life++;
+    }
 
+    public int getLife(){
+        return life;
+    }
+
+    public Vector getPosition(){
+        return position;
+    }
+
+    public void setPosition(Vector position){
+        this.position = position;
+    }
+
+    public void setLife(int life){
+        this.life = life;
+    }
+
+    public Color getColor(){
+        return color;
+    }
+
+    public void setColor(Color color){
+        this.color = color;
+    }
+
+    public Vector getVelocity(){
+        return velocity;
+    }
+
+    public void setVelocity(Vector velocity){
+        this.velocity = velocity;
     }
 
 }

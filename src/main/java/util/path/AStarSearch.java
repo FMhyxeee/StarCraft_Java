@@ -47,7 +47,7 @@ public class AStarSearch {
 
     //寻找进攻路线
 
-    public static LinkedList<AStarNode> fightFightPath(GridMap map, Tile goal){
+    public static LinkedList<AStarNode> findFightPath(GridMap map, Tile goal){
         AStarNode goalNode = new AStarNode(new Point(goal.getTileX(),goal.getTileY()));
         Point size = goal.getSize();
 

@@ -22,7 +22,7 @@ public interface Tile extends Serializable {
     //克隆
     public Tile clone(int x, int y , GridMap gridMap);
     //画
-    public void draw(Graphics2D g, GridMap gridMap);
+    public void draw(Graphics2D g, int offsetX, int offsetY);
     //更新
     public void update(long elapsedTime);
     //X坐标

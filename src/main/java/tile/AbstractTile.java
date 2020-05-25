@@ -52,7 +52,7 @@ public abstract class AbstractTile implements Tile {
     public abstract Tile clone(int x, int y, GridMap gridMap);
 
     @Override
-    public abstract void draw(Graphics2D g, GridMap gridMap);
+    public abstract void draw(Graphics2D g,int offsetX,int offsetY);
 
     @Override
     public void update(long elapsedTime) {
