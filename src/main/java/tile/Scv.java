@@ -256,7 +256,7 @@ public class Scv extends Sprite {
 
     float targetx, targety;
 
-    public boolean readMining(Tile tile, float x, float y){
+    public void readMining(Tile tile, float x, float y){
         if (isBuilding()){
 
         }else {
@@ -330,7 +330,7 @@ public class Scv extends Sprite {
                 for(int x = location.x;x<location.x+size.x;++x){
                     //check if is fit
                     if(gm.getGridMap().contains(x, y)){
-                        gm.addMsg(Constant.BUILD_ERROR);
+                        gm.addMsg("can not build here!");
                         return true;
                     }
                 }
