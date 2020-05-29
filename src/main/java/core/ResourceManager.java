@@ -4,16 +4,16 @@ package core;
 import icon.BaseIcon;
 import icon.HouseIcon;
 import icon.ScvIcon;
-import tile.Headquarter;
-import tile.House;
-import tile.Mine;
-import tile.Tile;
+import tile.*;
 
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.awt.image.DirectColorModel;
+import java.awt.image.MemoryImageSource;
+import java.awt.image.PixelGrabber;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -152,6 +152,7 @@ public class ResourceManager {
     **/
     public static class Constant{
 
+
         public static String IP;
 
         public static Color GREEN;
@@ -282,20 +283,232 @@ public class ResourceManager {
         }
 
         private static House createSupply(BufferedImage buffer, int id){
+            Image[] images = new Image[3];
+            int w = buffer.getWidth() / 3;
+            int h = buffer.getHeight();
 
+            for (int i = 0; i < images.length; ++i){
+                images[i] = buffer.getSubimage(w * i, 0, w, h);
+            }
+            House house = new Supply(images, id);
+            SCV_ICONS[0][0].add(house, images[0], house.getResource());
+            return house;
         }
+
+        private static House createBarrack(BufferedImage buffer, int id){
+            Image[] images = new Image[3];
+            int w = buffer.getWidth() / 3;
+            int h = buffer.getHeight();
+
+            for (int i = 0; i < images.length; i++){
+                images[i] = buffer.getSubimage(w * i , 0, w, h);
+            }
+
+            return new Headquarter(images, id);
+        }
+
+        private static House createBase(BufferedImage buffer, int id){
+            Image[] images = new Image[1];
+            int w = buffer.getWidth();
+            int h = buffer.getHeight();
+            for (int i = 0; i < images.length; i++){
+                images[i] = buffer.getSubimage(w * i, 0, w, h);
+            }
+            return new Headquarter(images, id);
+        }
+
+        private static Sprite createMarine(BufferedImage buffer, BufferedImage marineFight_buffer, int id){
+            int w = buffer.getWidth() / 3;
+            int h = buffer.getHeight() / 5;
+
+            Sprite.Animation[] moveAnima = new Sprite.Animation[8];
+            Image[][] images = new Image[8][3];
+
+            for (int y = 0, z = 3; y < 8; y++){
+                moveAnima[y] = new Sprite.Animation();
+
+                if (y >= 5){
+                    for (int i = 0; i < images[z].length; i++){
+                        Image image = ImageManager.getMirror(images[z][i]);
+                        images[y][i] = image;
+                        moveAnima[y].addFrame(image, 200);
+                    }
+                     --z;
+                } else {
+                    for ( int x = 0; x < 3; x++){
+                        Image image = buffer.getSubimage(x * w, y * h, w, h);
+                        images[y][x] = image;
+                        moveAnima[y].addFrame(image, 200);
+                    }
+                }
+            }
+
+            Image[][] antiImages = new Image[8][2];
+            Sprite.Animation[] fightAnima = new Sprite.Animation[8];
+            w = marineFight_buffer.getWidth() / 2;
+            h = marineFight_buffer.getHeight() / 2;
+
+            for (int y = 0, z = 3; y < 8; y++){
+                fightAnima[y] = new Sprite.Animation();
+
+                if (y >= 5) {
+
+                    for (int i = 0; i < antiImages[z].length; ++i) {
+                        Image image = ImageManager.getMirror(antiImages[z][i]);
+                        images[y][i] = image;
+                        fightAnima[y].addFrame(image, 200);
+                    }
+                    --z;
+
+                } else {
+
+                    Image image1 = marineFight_buffer.getSubimage(0, y * h, w, h);
+                    Image image2 = marineFight_buffer.getSubimage(w, y * h, w, h);
+                    antiImages[y][0] = image1;
+                    antiImages[y][1] = image2;
+                    fightAnima[y].addFrame(image1, 200);
+                    fightAnima[y].addFrame(image2, 200);
+                    fightAnima[y].addFrame(image1, 200);
+                    fightAnima[y].addFrame(image2, 200);
+                }
+            }
+            Sprite sprite = new Marine(new Sprite.Animation[][]{moveAnima, fightAnima}, id);
+            BACK_ICONS[0][0].add(sprite, null, sprite.getResource());
+            return sprite;
+        }
+
+
+        private static Sprite createScv(BufferedImage buffer, int id){
+            BufferedImage scvBuffer = buffer;
+            Sprite.Animation[][] anima = new Sprite.Animation[3][8];
+            int w = scvBuffer.getWidth() / 3;
+            int h = scvBuffer.getHeight() / 5;
+
+            for (int x = 0; x < anima.length; x++){
+                for (int y = 0; y < 5; y++){
+                    anima[x][y] = new Sprite.Animation();
+                    Image image = scvBuffer.getSubimage(x * w, y * h, w, h);
+                    anima[x][y].addFrame(image,200);
+                }
+
+                anima[x][5] = new Sprite.Animation(ImageManager.getMirror(anima[x][3]
+                        .getImage()), 200);
+                anima[x][6] = new Sprite.Animation(ImageManager.getMirror(anima[x][2]
+                        .getImage()), 200);
+                anima[x][7] = new Sprite.Animation(ImageManager.getMirror(anima[x][1]
+                        .getImage()), 200);
+            }
+            Sprite sprite = new Scv(anima, id);
+            HQ_ICONS[0][0].add(sprite, null, sprite.getResource());
+            return sprite;
+        }
+
+        private static Sprite createTank(BufferedImage buffer, int id){
+            Sprite.Animation[][] anima = new Sprite.Animation[1][8];
+            int w = buffer.getWidth();
+            int h = buffer.getHeight() / 5;
+
+            for (int x = 0; x < anima.length; x++){
+
+                for (int y = 0; y < 5; y++){
+                    anima[x][y] = new Sprite.Animation();
+                    Image image = buffer.getSubimage(x * w, y * h, w, h);
+                    anima[x][y].addFrame(image, 200);
+                }
+
+                anima[x][5] = new Sprite.Animation(ImageManager.getMirror(anima[x][3]
+                        .getImage()), 200);
+                anima[x][6] = new Sprite.Animation(ImageManager.getMirror(anima[x][2]
+                        .getImage()), 200);
+                anima[x][7] = new Sprite.Animation(ImageManager.getMirror(anima[x][1]
+                        .getImage()), 200);
+            }
+
+            Tank sprite = new Tank(anima, id);
+            BACK_ICONS[0][1].add(sprite, null, sprite.getResource());
+            return sprite;
+        }
+
+
 
         private static BufferedImage imageToBuffer(Image image){
 
             int w = image.getWidth(null);
             int h = image.getHeight(null);
 
-            BufferedImage buffer = new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
+            BufferedImage buffer = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 
             Graphics gh = buffer.getGraphics();
             gh.drawImage(image, 0, 0, null);
             gh.dispose();
             return buffer;
+        }
+
+
+        private static Image createImage(Image image, int color){
+            int w = image.getWidth(null);
+            int h = image.getHeight(null);
+
+            int[] pix = new int[w * h];
+            PixelGrabber pixelGrabber = new PixelGrabber(image, 0, 0, w, h, pix, 0, w);
+
+            try {
+                pixelGrabber.grabPixels();
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
+
+            int i = 0;
+            for (int y = 0; y < h; y++){
+                for (int x = 0; x < w; x++){
+                    int pixel = pix[i];
+                    int a = (pixel >> 24) & 0xff;
+                    int r = (pixel >> 16) & 0xff;
+                    int g = (pixel >> 8) & 0xff;
+                    int b = pixel & 0xff;
+                    Color c = new Color(r, g, b, a);
+
+                    switch (color) {
+                        case 0:
+                            if (r > b + 50 && r > g + 50) {
+                                if (r > b + 70 && r > g + 70) {
+                                    c = new Color(230, 100, 33, a);
+                                } else {
+                                    c = new Color(100, 50, 33, a);
+                                }
+
+                            }
+                            break;
+
+                        case 1:
+                            if (r > b + 50 && r > g + 50) {
+                                if (r > b + 70 && r > g + 70) {
+                                    c = new Color(33, 100, 230, a);
+                                } else {
+                                    c = new Color(30, 50, 100, a);
+                                }
+                            }
+                            break;
+                        case 2:
+                            if (r > b + 50 && r > g + 50) {
+                                if (r > b + 70 && r > g + 70) {
+                                    c = new Color(33, 146, 115, a);
+                                } else {
+                                    c = new Color(16, 85, 57, a);
+                                }
+
+                            }
+                            break;
+                    }
+
+                    pix[i] = c.getRGB();
+                    ++i;
+                }
+            }
+            MemoryImageSource producer = new MemoryImageSource(w, h,
+                    new DirectColorModel(32, 0x00ff0000, 0x0000ff00, 0x000000ff,
+                            0xff000000), pix, 0, w);
+            return Toolkit.getDefaultToolkit().createImage(producer);
         }
 
 
@@ -305,6 +518,11 @@ public class ResourceManager {
             }
             return IMAGE_CACHE.get(fileName);
         }
+
+        public static int getProgress(){
+            return Math.min(Math.round(progress / TOTAL * 600), 600);
+        }
+
     }
 
 }

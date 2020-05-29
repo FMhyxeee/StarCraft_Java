@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ManPanel extends JPanel {
+public class MapPanel extends JPanel {
 
     private static final Color bg = new Color(23,27,36);
 
@@ -33,7 +33,7 @@ public class ManPanel extends JPanel {
     GridMap gridMap;
 
 
-    public ManPanel(GridMapRender gridMapRender){
+    public MapPanel(GridMapRender gridMapRender){
         this.gridMap = gridMapRender.getGridMap();
         setSize(128, 128);
         setFocusable(false);
@@ -68,6 +68,11 @@ public class ManPanel extends JPanel {
         g.drawImage(buffer, 0, 0, null);
         g.setColor(Color.red);
         g.drawRect(x, y, width, height);
+    }
+
+    public void setConsoleRectLocation(int x, int y){
+        this.x = x;
+        this.y = y;
     }
 
     private class MouseListener extends MouseAdapter{

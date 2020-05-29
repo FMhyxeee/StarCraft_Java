@@ -1,12 +1,13 @@
 package tile;
 
-import core.GridMap;
 import core.GridMapRender;
 import core.ResourceManager;
+import core.ResourceManager.Constant;
 import icon.BaseIcon;
-import javafx.beans.binding.ListBinding;
+
 import util.Resource;
 import util.path.AStarSearch;
+
 
 import java.awt.*;
 import java.util.LinkedList;
@@ -316,7 +317,7 @@ public class Scv extends Sprite {
     String newTileuuid;
 
     @Override
-    public boolean opreate(int tx, int ty, String uuid) {
+    public boolean opreate(int tx, int ty, String newTileuuid) {
 
         if (isReadyBuild()){
 
@@ -329,7 +330,7 @@ public class Scv extends Sprite {
                 for(int x = location.x;x<location.x+size.x;++x){
                     //check if is fit
                     if(gm.getGridMap().contains(x, y)){
-                        gm.addMsg(ResourceManager.Constant.BUILD_ERROR);
+                        gm.addMsg(Constant.BUILD_ERROR);
                         return true;
                     }
                 }

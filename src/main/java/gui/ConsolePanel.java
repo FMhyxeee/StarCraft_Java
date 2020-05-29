@@ -12,7 +12,7 @@ public class ConsolePanel extends JPanel {
 
     GridMapRender tileMap;
 
-    public ManPanel man_panel;
+    public MapPanel map_panel;
     public WorkPanel work_panel;
 
     public ConsolePanel(GridMapRender gridMapRender) {
@@ -22,11 +22,11 @@ public class ConsolePanel extends JPanel {
         setSize(main.getWidth(null), main.getHeight(null));
 
         this.tileMap = gridMapRender;
-        man_panel = new ManPanel(gridMapRender);
+        map_panel = new MapPanel(gridMapRender);
         work_panel = new WorkPanel(gridMapRender);
-        man_panel.setLocation(10, 20);
-        man_panel.setLocation(10, 158);
-        add(man_panel);
+        map_panel.setLocation(10, 20);
+        map_panel.setLocation(10, 158);
+        add(map_panel);
         add(work_panel);
         gridMapRender.setConsolePanel(this);
     }

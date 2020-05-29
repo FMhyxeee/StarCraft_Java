@@ -7,6 +7,7 @@ import core.ResourceManager;
 import gui.WorkPanel;
 import icon.BaseIcon;
 import net.datagram.IconInfo;
+import util.Resource;
 import util.path.AStarNode;
 import util.path.AStarSearch;
 
@@ -124,6 +125,28 @@ public abstract class House extends AbstractTile implements Builder{
 
     @Override
     public void readyBuild(BaseIcon icon) {
-        WorkPanel workPanel
+        WorkPanel workPanel = gridMap.getTileMapRender().getConsolePanel().work_panel;
+        workPanel.build(this);
+        this.status = 1;
+        this.icon = icon;
     }
+
+    @Override
+    public Boolean isBuilding() {
+        return status == 1;
+    }
+
+    @Override
+    public float getComplete() {
+        return complete;
+    }
+
+
+    public abstract boolean build(long elapsedTime);
+
+    public abstract Point getSize();
+
+    public abstract Resource getResource();
+
+    public abstract float getDefence();
 }
