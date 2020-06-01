@@ -82,8 +82,8 @@ public class PlayerInfo implements java.io.Serializable{
         return socketAddress;
     }
 
-    public void setSocketAddress(InetSocketAddress socketAddress) {
-        this.socketAddress = socketAddress;
+    public void setSocketAddress(SocketAddress socketAddress) {
+        this.socketAddress = (InetSocketAddress) socketAddress;
     }
 
     public void setSocketAddress(InetAddress address, int port){

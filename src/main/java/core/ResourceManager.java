@@ -174,7 +174,7 @@ public class ResourceManager {
         //人口错误信息
         static String MAN_ERROR = "man need resource!";
         //建造错误
-        static String BUILD_ERROR = "can not build here";
+        public static String BUILD_ERROR = "can not build here";
         //背景
         public static Image IMAGE_MAP_BG;
         //ICON

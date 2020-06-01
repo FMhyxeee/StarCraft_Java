@@ -1,11 +1,10 @@
 package net;
 
-import com.sun.jmx.remote.internal.ClientListenerInfo;
 import net.datagram.IconInfo;
 import net.datagram.PlayerInfo;
 import net.datagram.PlayerList;
+import net.datagram.SpriteInfo;
 import net.socket.ClientListener;
-import net.socket.SpriteInfo;
 import net.udp.PlayerListener;
 import tile.Sprite;
 import tile.Tile;

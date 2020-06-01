@@ -88,6 +88,7 @@ public class AStarNode implements Comparable {
     }
 
 
+    @Override
     public boolean equals(Object obj){
         if (obj instanceof AStarNode){
             AStarNode n = ((AStarNode) obj);
@@ -112,7 +113,7 @@ public class AStarNode implements Comparable {
     }
 
     public int getX(){
-        return GridMapRender.tileXtoPx(location.x);
+        return GridMapRender.tileXToPx(location.x);
     }
 
     public int getY(){

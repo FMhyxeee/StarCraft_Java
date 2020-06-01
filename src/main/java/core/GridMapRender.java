@@ -3,7 +3,7 @@ package core;
 import gui.ConsolePanel;
 import icon.BaseIcon;
 import net.NetWorkManager;
-import net.socket.SpriteInfo;
+import net.datagram.SpriteInfo;
 import particles.PSExplosion;
 import tile.Headquarter;
 import tile.Sprite;

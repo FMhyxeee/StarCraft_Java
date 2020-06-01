@@ -2,7 +2,6 @@ package tile;
 
 import core.GridMapRender;
 import core.ResourceManager;
-import core.ResourceManager.Constant;
 import icon.BaseIcon;
 
 import util.Resource;
@@ -74,7 +73,6 @@ public class Scv extends Sprite {
         super.draw(g, offsetX, offsetY);
 
         if (isFighting()){
-
             int x = Math.round(this.x - offsetX);
             int y = Math.round(this.y - offsetY);
 
@@ -330,7 +328,7 @@ public class Scv extends Sprite {
                 for(int x = location.x;x<location.x+size.x;++x){
                     //check if is fit
                     if(gm.getGridMap().contains(x, y)){
-                        gm.addMsg("can not build here!");
+                        gm.addMsg(ResourceManager.Constant.BUILD_ERROR);
                         return true;
                     }
                 }

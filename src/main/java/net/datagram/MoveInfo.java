@@ -1,8 +1,5 @@
 package net.datagram;
 
-import net.socket.SpriteInfo;
-import tile.Sprite;
-
 import java.util.List;
 
 /**
