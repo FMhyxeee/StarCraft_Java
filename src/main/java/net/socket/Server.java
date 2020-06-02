@@ -73,6 +73,24 @@ public class Server implements Runnable {
         this.clientListener.selectPlayer(new ClientEvent(selectInfo));
     }
 
+    public void close(){
+        try {
+            loop=false;
+            for(ServerProcessor processor:processors){
+                processor.close();
+                processor=null;
+            }
+            server.close();
+            server = null;
+            processors.clear();
+            playerList.clear();
+            stack=null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private void listen(){
         try{
             Socket socket = server.accept();
