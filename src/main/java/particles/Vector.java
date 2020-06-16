@@ -2,6 +2,11 @@ package particles;
 
 import javax.sound.midi.Soundbank;
 
+/**
+* @author hyx
+* @description 向量类
+*
+**/
 public final class Vector {
     public static Vector Zero = new Vector(0.0f,0.0f,0.0f);
 
@@ -40,6 +45,7 @@ public final class Vector {
         return z;
     }
 
+    @Override
     public String toString() {
         return x + "," + y;
     }
