@@ -283,6 +283,10 @@ public class GridMapRender {
         fm.netWorkManager = this.netWorkManager;
     }
 
+    public FocusManager getFm(){
+        return fm;
+    }
+
     public void setOffset(int offsetX, int offsetY){
         this.offsetX = offsetX;
         this.offsetY = offsetY;

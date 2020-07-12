@@ -1,6 +1,5 @@
 package gui;
 
-import com.sun.corba.se.spi.orbutil.threadpool.Work;
 import core.GridMapRender;
 import core.ResourceManager;
 

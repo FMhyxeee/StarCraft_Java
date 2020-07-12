@@ -32,6 +32,15 @@ public class IconInfo implements java.io.Serializable {
         this.tileUUId = tileUUId;
     }
 
+    public String getName(){
+        return keyName;
+    }
+
+    public void setName(String name){
+        this.keyName = name;
+    }
+
+
     public int getAction() {
         return action;
     }

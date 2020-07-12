@@ -67,8 +67,7 @@ public abstract class FullGameCore {
         frame.setTitle("JStarCraft");
         isRunning = true;
         frame.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(
-                ResourceManager.loadImage("cur.png"), new Point(0,0),"cur"
-        ));
+                ResourceManager.loadImage(  "cur.png"), new Point(0, 0), "cur"));
         NullRepaintManager.install();
         frame.setLayout(null);
         ((JComponent)frame.getContentPane()).setOpaque(false);
